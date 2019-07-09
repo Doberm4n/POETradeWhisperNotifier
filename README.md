@@ -7,4 +7,6 @@
 - install Python 2.7
 - pip install pushbullet.py
 
-** Usage: 
+**Usage:** 
+- check or/and edit whisper filters in \Config\filters.json (app filters log for messages that start with <filterFrom> and contains <filterA> or <filterB>)
+- python whisperNotify.py -t <pushbullet API token>
