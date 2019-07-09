@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import sys, getopt, os
-#import psutil
 import json
 import time
-#from pushbullet import Pushbullet
 import pushbullet
 
 
@@ -16,47 +14,36 @@ def pushNotify(pushbulletAPItoken, msg):
 	try:
 		pbInstance = pushbullet.Pushbullet(pushbulletAPItoken)
 		pbInstance.push_note("New whisper: ", msg)
-		#print(pbInstance.push.status_code)
 		print "Ok"
 	except pushbullet.errors.InvalidKeyError:
 		print "Error: Invalid api key. Please check your access token" 
-		#print "Exit..."
-		return
-		#sys.exit(2)
+		print "Exit..."
+		sys.exit(2)
 	except pushbullet.errors.PushError as error:
 		print "Error: " + str(error)
 		return
-		#print "CTRL+C to exit..."
 	except Exception, e:
 		print "Error sending notification: " + str(e)
 		return
-		#print "CTRL+C to exit..."
 
 def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB):
 	try:
-		#print "Monitoring log file..."
 		checkedLine = None
 		with open(LogPath,'r') as f:
 			while True:
 				line = f.readline()
 				if not line:
 					break
-				#print(line)
 				checkedLine = line.strip()
-				#checkedLength = sum(1 for line in open(LogPath))
 				monitorMessage = True
 		while True:
 			with open(LogPath,'r') as f:
 				lines = f.readlines()
-				#newCheckedLength = len(lines)
 				if monitorMessage:
-					print "\nMonitoring log file..."
+					print "\nMonitoring log file...\n"
 					monitorMessage = False
 			if lines[-1].strip() != checkedLine:
-				#print 'lines[-1]' + lines[-1]
-				#print 'checkedLine' + checkedLine
 				checkedLine = lines[-1].strip()
-				#checkedLength = newCheckedLength
 				if checkedLine:
 					if (filterFrom in checkedLine and ('buy' in checkedLine or 'wtb' in checkedLine)):
 						lineToSend = '@' + checkedLine.split(' @', 1)[-1]
@@ -64,22 +51,23 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB):
 						print("Sending notification...")
 						pushNotify(pushbulletAPItoken, lineToSend)
 						monitorMessage = True
-			time.sleep(0.500)
+			time.sleep(delay)
 	except Exception, e:
-		print "Error: " + str(e)
+		print "\nError: " + str(e)
 		sys.exit(2)
 
 def main(argv):
 	print '\nTradeWhisperNotifier for PoE'
 	print 'version: ' + str(version)
 	print '(' + link + ')'
-	delay = 5
+	print 'To exit press CTRL+C'
+	delay = 0.500
 	pushbulletAPItoken = None
 	LogPath = None
 	filters = None
 
 	try:
-		opts, args = getopt.getopt(argv,"t:p:c:l:a:d:r:",["token", "path", "lang" "character", "league", "accountName", "delay", "indexRange"])
+		opts, args = getopt.getopt(argv,"t:p:",["token", "path"])
 	except getopt.GetoptError:
 	   print 'Usage: -t <token> -p <path to log file>'
 	   sys.exit(2)
@@ -88,8 +76,6 @@ def main(argv):
 			pushbulletAPItoken = str(arg)
 		elif opt in ("-p", "--path"):
 			LogPath = str(arg)
-		elif opt in ("-l", "--lang"):
-			lang = str(arg)
 
 	if not pushbulletAPItoken:
 		print '\nPushbullet API token not specified'
@@ -106,12 +92,6 @@ def main(argv):
 		filterFrom = config['filters']['filterFrom'].encode("utf-8")
 		filterA = config['filters']['filterA'].encode("utf-8")
 		filterB = config['filters']['filterB'].encode("utf-8")
-		#print filterFrom
-		#print filterA
-		#print filterB
-		#f= open("text.txt","w+")
-		#f.write(filterA)
-		#f.close
 		MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB)
 
 def loadConfig():
@@ -125,7 +105,6 @@ def loadConfig():
 if __name__ == "__main__":
 	try:
 		main(sys.argv[1:])
-	#CTRL + C
 	except KeyboardInterrupt:
 		print 'Exit... (Keyboard Interrupt)'
 		sys.exit(2)
