@@ -1,0 +1,2 @@
+# POETradeWhisperNotifier-
+TradeWhisperNotifier for PoE
