@@ -26,7 +26,7 @@ def pushNotify(pushbulletAPItoken, msg):
 		print "Error sending notification: " + str(e)
 		return
 
-def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB):
+def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay):
 	try:
 		checkedLine = None
 		with open(LogPath,'r') as f:
@@ -60,7 +60,7 @@ def main(argv):
 	print '\nTradeWhisperNotifier for PoE'
 	print 'version: ' + str(version)
 	print '(' + link + ')'
-	print 'To exit press CTRL+C'
+	print '(To exit press CTRL+C)'
 	delay = 0.500
 	pushbulletAPItoken = None
 	LogPath = None
