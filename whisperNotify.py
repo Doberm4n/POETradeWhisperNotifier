@@ -6,7 +6,6 @@ import json
 import time
 import pushbullet
 
-
 version = '0.9.0'
 link = 'https://git.io/fjiyW'
 
