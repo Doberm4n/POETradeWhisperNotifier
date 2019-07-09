@@ -92,7 +92,7 @@ def main(argv):
 		filterFrom = config['filters']['filterFrom'].encode("utf-8")
 		filterA = config['filters']['filterA'].encode("utf-8")
 		filterB = config['filters']['filterB'].encode("utf-8")
-		MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB)
+		MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay)
 
 def loadConfig():
     try:
