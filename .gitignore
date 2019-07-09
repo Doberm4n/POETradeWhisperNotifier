@@ -1,0 +1,15 @@
+*.pyc
+*.zip
+Guides/guide*
+Guides/*.json
+build/
+dist*
+release/
+*.spec
+*.7z
+*.rar
+*.exe
+*.txt
+!version.txt
+/test
+/test2
