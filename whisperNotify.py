@@ -43,25 +43,26 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB):
 					break
 				#print(line)
 				checkedLine = line.strip()
-				checkedLength = sum(1 for line in open(LogPath))
+				#checkedLength = sum(1 for line in open(LogPath))
 				monitorMessage = True
 		while True:
 			with open(LogPath,'r') as f:
 				lines = f.readlines()
-				newCheckedLength = len(lines)
+				#newCheckedLength = len(lines)
 				if monitorMessage:
 					print "\nMonitoring log file..."
 					monitorMessage = False
-			if (lines[-1].strip() != checkedLine) or (newCheckedLength > checkedLength):
+			if lines[-1].strip() != checkedLine:
 				#print 'lines[-1]' + lines[-1]
 				#print 'checkedLine' + checkedLine
 				checkedLine = lines[-1].strip()
-				checkedLength = newCheckedLength
+				#checkedLength = newCheckedLength
 				if checkedLine:
-					if (filterFrom in checkedLine and (  (('buy' in checkedLine) or ('wtb' in checkedLine))    or  ((filterA in checkedLine) or (filterB in checkedLine)) )     ):
-						print("New whisper: " + '@' + checkedLine.split(' @', 1)[-1])
+					if (filterFrom in checkedLine and ('buy' in checkedLine or 'wtb' in checkedLine)):
+						lineToSend = checkedLine.split(' @', 1)[-1]
+						print("New whisper: " + '@' + lineToSend)
 						print("Sending notification...")
-						pushNotify(pushbulletAPItoken, checkedLine)
+						pushNotify(pushbulletAPItoken, lineToSend)
 						monitorMessage = True
 			time.sleep(0.500)
 	except Exception, e:

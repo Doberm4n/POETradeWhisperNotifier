@@ -9,6 +9,8 @@ release/
 *.7z
 *.rar
 *.exe
+*.cmd
+*.bat
 *.txt
 !version.txt
 /test
