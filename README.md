@@ -1,7 +1,7 @@
 # POETradeWhisperNotifier
 ## Trade whisper notifier for PoE
 
-> Simple app that monitors PoE log file with specified filters for trade whispers and sends a Pushbullet notification
+> Simple console app that monitors PoE log file with specified filters for trade whispers and sends a Pushbullet notification
 
 > This app does not change any of the game files and do not interfere with memory used by game. All that it does is reading Client.txt file
  
