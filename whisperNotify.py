@@ -10,7 +10,7 @@ import pushbullet
 
 
 version = '0.9.0'
-link = 'https://github.com/Doberm4n/POETradeWhisperNotifier'
+link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
 	try:
@@ -59,8 +59,8 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB):
 				#checkedLength = newCheckedLength
 				if checkedLine:
 					if (filterFrom in checkedLine and ('buy' in checkedLine or 'wtb' in checkedLine)):
-						lineToSend = checkedLine.split(' @', 1)[-1]
-						print("New whisper: " + '@' + lineToSend)
+						lineToSend = '@' + checkedLine.split(' @', 1)[-1]
+						print("New whisper: " + lineToSend)
 						print("Sending notification...")
 						pushNotify(pushbulletAPItoken, lineToSend)
 						monitorMessage = True
