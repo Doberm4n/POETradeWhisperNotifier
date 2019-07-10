@@ -19,4 +19,7 @@
 - you can always put cmd line into .bat or .cmd file for quick use (end that file with "pause" to see any errors)
 - the smaller the log file, the faster the application
 
+
+POETradeWhisperNotifier application as a standalone package with .exe is available on the [releases page](https://github.com/Doberm4n/POETradeWhisperNotifier/releases/latest)
+
 Repository: https://git.io/fjiyW
