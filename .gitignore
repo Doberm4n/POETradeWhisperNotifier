@@ -13,5 +13,6 @@ release/
 *.bat
 *.txt
 !version.txt
+!build_exe.cmd
 /test
 /test2
