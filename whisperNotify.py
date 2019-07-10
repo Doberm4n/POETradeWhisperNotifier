@@ -17,7 +17,7 @@ def pushNotify(pushbulletAPItoken, msg):
 	except pushbullet.errors.InvalidKeyError:
 		print "Error: Invalid api key. Please check your access token" 
 		print "Exit..."
-		sys.exit(2)
+		exitApp()
 	except pushbullet.errors.PushError as error:
 		print "Error: " + str(error)
 		return
@@ -53,7 +53,7 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 			time.sleep(delay)
 	except Exception, e:
 		print "\nError: " + str(e)
-		sys.exit(2)
+		exitApp()
 
 def main(argv):
 	print '\nTradeWhisperNotifier for PoE'
@@ -68,8 +68,8 @@ def main(argv):
 	try:
 		opts, args = getopt.getopt(argv,"t:p:",["token", "path"])
 	except getopt.GetoptError:
-	   print 'Usage: -t <token> -p <path to log file>'
-	   sys.exit(2)
+	   print '\nUsage: -t <token> -p <path to log file>'
+	   exitApp()
 	for opt, arg in opts:
 		if opt in ("-t", "--token"):
 			pushbulletAPItoken = str(arg)
@@ -79,27 +79,37 @@ def main(argv):
 	if not pushbulletAPItoken:
 		print '\nPushbullet API token not specified'
 		print '\nUsage: -t <token> -p <path to log file>'
-		sys.exit(2)
+		exitApp()
 	if not LogPath:
 		print '\n Path to log file not specified'
 		print '\nUsage: -t <token> -p <path to log file>'
-		sys.exit(2)
+		exitApp()
 
 	config = loadConfig()
 
-	if config:
-		filterFrom = config['filters']['filterFrom'].encode("utf-8")
-		filterA = config['filters']['filterA'].encode("utf-8")
-		filterB = config['filters']['filterB'].encode("utf-8")
-		MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay)
+	try:
+		if config:
+			filterFrom = config['filters']['filterFrom'].encode("utf-8")
+			filterA = config['filters']['filterA'].encode("utf-8")
+			filterB = config['filters']['filterB'].encode("utf-8")
+			MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay)
+	except Exception, e:
+		print "\nError: " + str(e)
+		print 'Please check filters config file (' + "\\" + 'Config' + "\\" + 'filters.json)'
+		exitApp()
 
 def loadConfig():
-    try:
-        with open('config\\filters.json') as data_file:
-            return json.load(data_file)
-    except Exception, e:
-        print "\nError: " + str(e)
-        print 'Please check filters config file (' + "\\" + 'Config' + "\\" + 'filters.json)'
+	try:
+		with open('config\\filters.json') as data_file:
+			return json.load(data_file)
+	except Exception, e:
+		print "\nError: " + str(e)
+		print 'Please check filters config file (' + "\\" + 'Config' + "\\" + 'filters.json)'
+		exitApp()
+
+def exitApp():
+	raw_input("\nPress enter to exit")
+	sys.exit(2)
 
 if __name__ == "__main__":
 	try:
