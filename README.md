@@ -1,12 +1,14 @@
-# POETradeWhisperNotifier 
-## Trade whisper notifier for PoE
+<img align="left" width="100" height="100" src="https://github.com/Doberm4n/POETradeWhisperNotifier/blob/master/res/message.png">
 
+# POETradeWhisperNotifier 
+<br>
+
+## Trade whisper notifier for PoE
 
 > Simple console app that monitors PoE log file with specified filters for trade whispers and sends a Pushbullet notification
 
 > This app does not change any of the game files and do not interfere with memory used by game. All that it does is reading Client.txt file
  
-
 **Installation:**
 - install Python 2.7
 - pip install pushbullet.py
