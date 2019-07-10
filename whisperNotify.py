@@ -4,9 +4,10 @@
 import sys, getopt, os
 import json
 import time
+from datetime import datetime
 import pushbullet
 
-version = '0.9.1'
+version = '0.9.2'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
@@ -46,6 +47,7 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 				if checkedLine:
 					if (filterFrom in checkedLine and ('buy' in checkedLine or 'wtb' in checkedLine)):
 						lineToSend = '@' + checkedLine.split(' @', 1)[-1]
+						print datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
 						print("New whisper: " + lineToSend)
 						print("Sending notification...")
 						pushNotify(pushbulletAPItoken, lineToSend)
