@@ -6,7 +6,7 @@ import json
 import time
 import pushbullet
 
-version = '0.9.0'
+version = '0.9.1'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
