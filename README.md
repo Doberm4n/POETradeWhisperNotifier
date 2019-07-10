@@ -1,5 +1,6 @@
-# POETradeWhisperNotifier
+# POETradeWhisperNotifier 
 ## Trade whisper notifier for PoE
+
 
 > Simple console app that monitors PoE log file with specified filters for trade whispers and sends a Pushbullet notification
 
@@ -15,3 +16,5 @@
 - python whisperNotify.py -t "pushbullet API token" (without quotes) -p "full path to Client.txt file" (with quotes)
 - you can always put cmd line into .bat or .cmd file for quick use (end that file with "pause" to see any errors)
 - the smaller the log file, the faster the application
+
+Repository: https://git.io/fjiyW
