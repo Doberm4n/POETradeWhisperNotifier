@@ -12,6 +12,7 @@
 **Installation:**
 - install Python 2.7
 - pip install pushbullet.py
+- pip install playsound
 
 **Usage:** 
 - check or/and edit whisper filters in \config\filters.json (app filters log for messages that start with "filterFrom" value and contains "filterA" or "filterB" values). If edited, filters.json must be saved with UTF-8 encoding to support different game languages. By deafult, in this repository filters.json contains filters for EN language
