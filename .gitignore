@@ -12,6 +12,8 @@ release/
 *.cmd
 *.bat
 *.txt
+*.wav
+*.mp3
 !version.txt
 !build_exe.cmd
 /test
