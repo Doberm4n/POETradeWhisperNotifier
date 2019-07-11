@@ -71,9 +71,9 @@ def main(argv):
 	notificationSound = None
 
 	try:
-		opts, args = getopt.getopt(argv,"t:p:s:",["token", "path", "sound"])
+		opts, args = getopt.getopt(argv,"t:p:s:d:",["token", "path", "sound", "delay"])
 	except getopt.GetoptError:
-	   print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)>'
+	   print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay to read log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
 	   exitApp()
 	for opt, arg in opts:
 		if opt in ("-t", "--token"):
@@ -82,14 +82,19 @@ def main(argv):
 			LogPath = str(arg)
 		elif opt in ("-s", "--sound"):
 			notificationSound = str(arg)
+		elif opt in ("-d", "--delay"):
+			try:
+				if (isinstance(float(arg), float)): delay = float(arg)
+			except Exception, e:
+				print "\nError: bad delay parameter (example: 1, 0.5, 0.05 ...). Using defaults (0.5 sec)..."			
 
 	if not pushbulletAPItoken:
 		print '\nPushbullet API token not specified'
-		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)>'
+		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay to read log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
 		exitApp()
 	if not LogPath:
 		print '\n Path to log file not specified'
-		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)>'
+		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay to read log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
 		exitApp()
 
 	config = loadConfig()
