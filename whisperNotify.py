@@ -85,11 +85,11 @@ def main(argv):
 
 	if not pushbulletAPItoken:
 		print '\nPushbullet API token not specified'
-		print '\nUsage: -t <token> -p <path to log file>'
+		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)>'
 		exitApp()
 	if not LogPath:
 		print '\n Path to log file not specified'
-		print '\nUsage: -t <token> -p <path to log file>'
+		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)>'
 		exitApp()
 
 	config = loadConfig()
