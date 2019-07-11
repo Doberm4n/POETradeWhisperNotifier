@@ -6,8 +6,9 @@ import json
 import time
 from datetime import datetime
 import pushbullet
+from playsound import playsound
 
-version = '0.9.2'
+version = '0.9.3'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
@@ -26,7 +27,7 @@ def pushNotify(pushbulletAPItoken, msg):
 		print "Error sending notification: " + str(e)
 		return
 
-def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay):
+def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound):
 	try:
 		checkedLine = None
 		with open(LogPath,'r') as f:
@@ -40,7 +41,7 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 			with open(LogPath,'r') as f:
 				lines = f.readlines()
 				if monitorMessage:
-					print "\nMonitoring log file...\n"
+					print "\nWaiting for trade whisper...\n"
 					monitorMessage = False
 			if lines[-1].strip() != checkedLine:
 				checkedLine = lines[-1].strip()
@@ -49,6 +50,7 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 						lineToSend = '@' + checkedLine.split(' @', 1)[-1]
 						print datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
 						print("New whisper: " + lineToSend)
+						if notificationSound: playNotificationSound(notificationSound)
 						print("Sending notification...")
 						pushNotify(pushbulletAPItoken, lineToSend)
 						monitorMessage = True
@@ -66,17 +68,20 @@ def main(argv):
 	pushbulletAPItoken = None
 	LogPath = None
 	filters = None
+	notificationSound = None
 
 	try:
-		opts, args = getopt.getopt(argv,"t:p:",["token", "path"])
+		opts, args = getopt.getopt(argv,"t:p:s:",["token", "path", "sound"])
 	except getopt.GetoptError:
-	   print '\nUsage: -t <token> -p <path to log file>'
+	   print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)>'
 	   exitApp()
 	for opt, arg in opts:
 		if opt in ("-t", "--token"):
 			pushbulletAPItoken = str(arg)
 		elif opt in ("-p", "--path"):
 			LogPath = str(arg)
+		elif opt in ("-s", "--sound"):
+			notificationSound = str(arg)
 
 	if not pushbulletAPItoken:
 		print '\nPushbullet API token not specified'
@@ -94,7 +99,7 @@ def main(argv):
 			filterFrom = config['filters']['filterFrom'].encode("utf-8")
 			filterA = config['filters']['filterA'].encode("utf-8")
 			filterB = config['filters']['filterB'].encode("utf-8")
-			MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay)
+			MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound)
 	except Exception, e:
 		print "\nError: " + str(e)
 		print 'Please check filters config file (' + "\\" + 'Config' + "\\" + 'filters.json)'
@@ -108,6 +113,14 @@ def loadConfig():
 		print "\nError: " + str(e)
 		print 'Please check filters config file (' + "\\" + 'Config' + "\\" + 'filters.json)'
 		exitApp()
+
+def playNotificationSound(path):
+	try:
+		print 'Playing sound notification...'
+		playsound(path, False)
+	except Exception, e:
+		print "Error playing sound notification. Please check sound file"
+		return
 
 def exitApp():
 	raw_input("\nPress enter to exit")
