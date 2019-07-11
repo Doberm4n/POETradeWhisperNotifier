@@ -27,9 +27,9 @@ def pushNotify(pushbulletAPItoken, msg):
 		print "Error sending notification: " + str(e)
 		return
 
-def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound):
+def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound, maxLogSizeMB):
 	try:
-		if os.path.getsize("E:\\Client.txt")/1024/1024>10:
+		if os.path.getsize("E:\\Client.txt")/1024/1024>maxLogSizeMB:
 			print '\nLog file size must be less than 5MB'
 			exitApp()
 		checkedLine = None
@@ -72,6 +72,7 @@ def main(argv):
 	LogPath = None
 	filters = None
 	notificationSound = None
+	maxLogSizeMB = 10
 
 	try:
 		opts, args = getopt.getopt(argv,"t:p:s:d:",["token", "path", "sound", "delay"])
@@ -107,7 +108,7 @@ def main(argv):
 			filterFrom = config['filters']['filterFrom'].encode("utf-8")
 			filterA = config['filters']['filterA'].encode("utf-8")
 			filterB = config['filters']['filterB'].encode("utf-8")
-			MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound)
+			MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound, maxLogSizeMB)
 	except Exception, e:
 		print "\nError: " + str(e)
 		print 'Please check filters config file (' + "\\" + 'Config' + "\\" + 'filters.json)'
