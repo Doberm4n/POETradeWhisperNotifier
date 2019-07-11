@@ -46,7 +46,7 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 			if lines[-1].strip() != checkedLine:
 				checkedLine = lines[-1].strip()
 				if checkedLine:
-					if (filterFrom in checkedLine and ('buy' in checkedLine or 'wtb' in checkedLine)):
+					if (filterFrom in checkedLine and (filterA in checkedLine or filterB in checkedLine)):
 						lineToSend = '@' + checkedLine.split(' @', 1)[-1]
 						print datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
 						print("New whisper: " + lineToSend)
