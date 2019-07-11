@@ -29,6 +29,9 @@ def pushNotify(pushbulletAPItoken, msg):
 
 def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound):
 	try:
+		if os.path.getsize("E:\\Client.txt")/1024/1024>10:
+			print '\nLog file size must be less than 5MB'
+			exitApp()
 		checkedLine = None
 		with open(LogPath,'r') as f:
 			while True:
@@ -73,7 +76,7 @@ def main(argv):
 	try:
 		opts, args = getopt.getopt(argv,"t:p:s:d:",["token", "path", "sound", "delay"])
 	except getopt.GetoptError:
-	   print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay to read log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
+	   print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
 	   exitApp()
 	for opt, arg in opts:
 		if opt in ("-t", "--token"):
@@ -90,11 +93,11 @@ def main(argv):
 
 	if not pushbulletAPItoken:
 		print '\nPushbullet API token not specified'
-		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay to read log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
+		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
 		exitApp()
 	if not LogPath:
 		print '\n Path to log file not specified'
-		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay to read log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
+		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
 		exitApp()
 
 	config = loadConfig()
