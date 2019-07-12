@@ -7,8 +7,9 @@ import time
 from datetime import datetime
 import pushbullet
 from playsound import playsound
+import threading
 
-version = '0.9.32'
+version = '0.9.4'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
@@ -27,36 +28,49 @@ def pushNotify(pushbulletAPItoken, msg):
 		print "Error sending notification: " + str(e)
 		return
 
-def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound, maxLogSizeMB):
+def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound, maxLogSizeMB, floodFilterDelay, isFloodFilterDelay):
 	try:
 		if os.path.getsize(LogPath)/1024/1024>maxLogSizeMB:
-			print '\nLog file size must be less than 7MB'
+			print '\nLog file size must be less than '+ str(maxLogSizeMB) + 'MB'
 			exitApp()
-		checkedLine = None
 		with open(LogPath,'r') as f:
-			while True:
-				line = f.readline()
-				if not line:
-					break
-				checkedLine = line.strip()
-				monitorMessage = True
+			f.seek(0, os.SEEK_END)
+			checkedPos = f.tell()
+			monitorMessage = True
+			startTime = time.time()
+			floodTimer = floodFilterDelay
+			isInitWhisper = True
 		while True:
 			with open(LogPath,'r') as f:
-				lines = f.readlines()
+				f.seek(checkedPos)
+				newLine = f.readline().strip()
+				currentPos = f.tell()
 				if monitorMessage:
 					print "\nWaiting for trade whisper...\n"
 					monitorMessage = False
-			if lines[-1].strip() != checkedLine:
-				checkedLine = lines[-1].strip()
-				if checkedLine:
-					if (filterFrom in checkedLine and (filterA in checkedLine or filterB in checkedLine)):
-						lineToSend = '@' + checkedLine.split(' @', 1)[-1]
-						print datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
-						print("New whisper: " + lineToSend)
-						if notificationSound: playNotificationSound(notificationSound)
-						print("Sending notification...")
-						pushNotify(pushbulletAPItoken, lineToSend)
-						monitorMessage = True
+				if checkedPos < currentPos:
+					checkedLine = newLine.strip()
+					checkedPos = f.tell()
+					if checkedLine:
+						if (filterFrom in checkedLine and (filterA in checkedLine or filterB in checkedLine)):
+							lineToSend = '@' + checkedLine.split(' @', 1)[-1]
+							print datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
+							print("New whisper: " + lineToSend)	
+							if (floodTimer >= floodFilterDelay) and isFloodFilterDelay:
+								if notificationSound: playNotificationSound(notificationSound)
+								print("Sending notification...")
+								pushNotify(pushbulletAPItoken, lineToSend)
+								startTime = time.time()
+								floodTimer = 0
+								isInitWhisper = False
+							elif not isFloodFilterDelay:
+								if notificationSound: playNotificationSound(notificationSound)
+								print("Sending notification...")
+								pushNotify(pushbulletAPItoken, lineToSend)
+							else:
+								print "Skipping this whisper notifications because of flood filter"
+							monitorMessage = True
+				if not isInitWhisper: floodTimer = time.time() - startTime
 			time.sleep(delay)
 	except Exception, e:
 		print "\nError: " + str(e)
@@ -67,17 +81,19 @@ def main(argv):
 	print 'version: ' + str(version)
 	print '(' + link + ')'
 	print '(To exit press CTRL+C)'
-	delay = 0.500
+	delay = 2.00
 	pushbulletAPItoken = None
 	LogPath = None
 	filters = None
 	notificationSound = None
-	maxLogSizeMB = 7
+	maxLogSizeMB = 50
+	floodFilterDelay = 5.00
+	isFloodFilterDelay = False
 
 	try:
-		opts, args = getopt.getopt(argv,"t:p:s:d:",["token", "path", "sound", "delay"])
+		opts, args = getopt.getopt(argv,"t:p:s:d:f:",["token", "path", "sound", "delay", "floodDelay"])
 	except getopt.GetoptError:
-	   print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
+	   print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: -d 0.5 - 0.5sec and so on) (optional) (if not specified - 2sec) -f <flood filter delay (notify not often than this value)(example: -f 10 - 10sec and so on) (optional) (if not specified - 5sec)>'
 	   exitApp()
 	for opt, arg in opts:
 		if opt in ("-t", "--token"):
@@ -90,15 +106,22 @@ def main(argv):
 			try:
 				if (isinstance(float(arg), float)): delay = float(arg)
 			except Exception, e:
-				print "\nError: bad delay parameter (example: 1, 0.5, 0.05 ...). Using defaults (0.5 sec)..."			
+				print "\nError: bad delay parameter (example: 1, 0.5, 0.05 ...). Using defaults (2 sec)..."		
+		elif opt in ("-f", "--floodDelay"):
+			try:
+				if (isinstance(float(arg), float)): 
+					floodFilterDelay = float(arg)
+					isFloodFilterDelay = True
+			except Exception, e:
+				print "\nError: bad flood delay parameter (example: 1, 0.5, 0.05 ...). Using defaults (5 sec)..."		
 
 	if not pushbulletAPItoken:
 		print '\nPushbullet API token not specified'
-		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
+		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: -d 0.5 - 0.5sec and so on) (optional) (if not specified - 2sec) -f <flood filter delay (notify not often than this value)(example: -f 10 - 10sec and so on) (optional) (if not specified - 5sec)>'
 		exitApp()
 	if not LogPath:
 		print '\n Path to log file not specified'
-		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (if not specified - 0.5sec)>'
+		print '\nUsage: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: -d 0.5 - 0.5sec and so on) (optional) (if not specified - 2sec) -f <flood filter delay (notify not often than this value)(example: -f 10 - 10sec and so on) (optional) (if not specified - 5sec)>'
 		exitApp()
 
 	config = loadConfig()
@@ -108,7 +131,7 @@ def main(argv):
 			filterFrom = config['filters']['filterFrom'].encode("utf-8")
 			filterA = config['filters']['filterA'].encode("utf-8")
 			filterB = config['filters']['filterB'].encode("utf-8")
-			MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound, maxLogSizeMB)
+			MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound, maxLogSizeMB, floodFilterDelay, isFloodFilterDelay)
 	except Exception, e:
 		print "\nError: " + str(e)
 		print 'Please check filters config file (' + "\\" + 'Config' + "\\" + 'filters.json)'
@@ -130,6 +153,9 @@ def playNotificationSound(path):
 	except Exception, e:
 		print "Error playing sound notification. Please check sound file"
 		return
+
+def floodTimer():
+	return True
 
 def exitApp():
 	raw_input("\nPress enter to exit")

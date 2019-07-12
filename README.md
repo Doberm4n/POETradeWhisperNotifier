@@ -25,7 +25,7 @@
 
 > create shortcut for whisperNotify.exe with options: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: 1 - 1sec, 0.5 - 0.5sec, 0.05 - 0,05sec and so on) (optional) (without quotes) (if not specified - 0.5sec)>
 - you can always put cmd line for whisperNotify.py into .bat or .cmd file for quick use (end that file with "pause" to see any errors)
-- the smaller the log file, the faster the application, log filesize at start must be less than 7MB to minimize resources consume
+- the smaller the log file, the faster the application, log filesize at start must be less than 50MB to minimize resources consume
 
 
 POETradeWhisperNotifier application as a standalone package with .exe is available on the [releases page](https://github.com/Doberm4n/POETradeWhisperNotifier/releases/latest)
