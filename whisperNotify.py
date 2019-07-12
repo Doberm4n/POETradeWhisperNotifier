@@ -9,7 +9,7 @@ import pushbullet
 from playsound import playsound
 import threading
 
-version = '0.9.41'
+version = '0.9.42'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
@@ -48,13 +48,17 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 				if monitorMessage:
 					print "\nWaiting for trade whisper...\n"
 					monitorMessage = False
+					i = 0
+					print 'Reading...' + str(i)+ ' (in progress...)\r',
 				if checkedPos < currentPos:
 					checkedLine = newLine.strip()
 					checkedPos = f.tell()
+					i += 1
+					print 'Reading...' + str(i)+ ' (in progress...)\r',
 					if checkedLine:
 						if (filterFrom in checkedLine and (filterA in checkedLine or filterB in checkedLine)):
 							lineToSend = '@' + checkedLine.split(' @', 1)[-1]
-							print datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
+							print '\n\n' + datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
 							print("New whisper: " + lineToSend)	
 							if (floodTimer >= floodFilterDelay) and isFloodFilterDelay:
 								if notificationSound: playNotificationSound(notificationSound)
@@ -70,6 +74,7 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 							else:
 								print "Skipping this whisper notifications because of flood filter"
 							monitorMessage = True
+							i = 0
 				if not isInitWhisper: floodTimer = time.time() - startTime
 			time.sleep(delay)
 	except Exception, e:
