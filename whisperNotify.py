@@ -9,7 +9,7 @@ import pushbullet
 from playsound import playsound
 import threading
 
-version = '0.9.4'
+version = '0.9.41'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
@@ -43,7 +43,7 @@ def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 		while True:
 			with open(LogPath,'r') as f:
 				f.seek(checkedPos)
-				newLine = f.readline().strip()
+				newLine = unicode(f.readline().strip(), "utf-8")
 				currentPos = f.tell()
 				if monitorMessage:
 					print "\nWaiting for trade whisper...\n"
@@ -166,4 +166,5 @@ if __name__ == "__main__":
 		main(sys.argv[1:])
 	except KeyboardInterrupt:
 		print 'Exit... (Keyboard Interrupt)'
+		raw_input("\nPress enter to exit")
 		sys.exit(2)
