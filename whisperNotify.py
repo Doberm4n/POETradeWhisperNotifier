@@ -8,7 +8,7 @@ from datetime import datetime
 import pushbullet
 from playsound import playsound
 
-version = '0.9.3'
+version = '0.9.31'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
@@ -30,7 +30,7 @@ def pushNotify(pushbulletAPItoken, msg):
 def MonitorLogs(LogPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay, notificationSound, maxLogSizeMB):
 	try:
 		if os.path.getsize("E:\\Client.txt")/1024/1024>maxLogSizeMB:
-			print '\nLog file size must be less than 5MB'
+			print '\nLog file size must be less than 7MB'
 			exitApp()
 		checkedLine = None
 		with open(LogPath,'r') as f:
@@ -72,7 +72,7 @@ def main(argv):
 	LogPath = None
 	filters = None
 	notificationSound = None
-	maxLogSizeMB = 10
+	maxLogSizeMB = 7
 
 	try:
 		opts, args = getopt.getopt(argv,"t:p:s:d:",["token", "path", "sound", "delay"])
