@@ -9,7 +9,7 @@ import pushbullet
 from playsound import playsound
 import threading
 
-version = '0.9.42'
+version = '0.9.43'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
@@ -170,6 +170,6 @@ if __name__ == "__main__":
 	try:
 		main(sys.argv[1:])
 	except KeyboardInterrupt:
-		print 'Exit... (Keyboard Interrupt)'
+		print '\n\nExit... (Keyboard Interrupt)'
 		raw_input("\nPress enter to exit")
 		sys.exit(2)
