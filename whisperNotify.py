@@ -55,9 +55,9 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 				if checkedPos < currentPos:
 					checkedLine = newLine.strip()
 					checkedPos = f.tell()
-					i += 1
-					print 'Reading...' + str(i)+ ' (in progress...)\r',
 					if checkedLine:
+						i += 1
+						print 'Reading...' + str(i)+ ' (in progress...)\r',
 						if (filterFrom in checkedLine and (filterA in checkedLine or filterB in checkedLine)):
 							lineToSend = '@' + checkedLine.split(' @', 1)[-1]
 							printLine('C', '\n\n' + datetime.now().strftime('[%Y-%m-%d %H:%M:%S]'))
