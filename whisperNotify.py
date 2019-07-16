@@ -168,7 +168,7 @@ def printLine(style, line):
 	elif style == 'E':
 		print (Fore.RED + Style.BRIGHT + line)
 	print Style.RESET_ALL + '\r',
-
+ 
 def exitApp():
 	raw_input("\nPress enter to exit")
 	sys.exit(2)
