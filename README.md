@@ -15,6 +15,7 @@
 - install Python 2.7
 - pip install pushbullet.py
 - pip install playsound
+- pip install colorama
 
 >or download and unpack .zip from [releases](https://github.com/Doberm4n/POETradeWhisperNotifier/releases/latest)
 
