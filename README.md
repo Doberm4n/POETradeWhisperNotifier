@@ -19,13 +19,28 @@
 >or download and unpack .zip from [releases](https://github.com/Doberm4n/POETradeWhisperNotifier/releases/latest)
 
 **Usage:** 
-- check or/and edit whisper filters in \config\filters.json (app filters log for messages that start with "filterFrom" value and contains "filterA" or "filterB" values). If edited, filters.json must be saved with UTF-8 encoding to support different game languages. By deafult, in this repository filters.json contains filters for EN language
-- python whisperNotify.py -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: -d 0.5 - 0.5sec and so on) (optional) (if not specified - 2sec) -f <flood filter delay (notify not often than this value)(example: -f 10 - 10sec and so on) (optional) (if not specified - 5sec)> 
+1. before first run, open \config\config.json:
+   - set path to log file:
+     - for example: "logPath": "D:\\\Test\\\Client.txt" (two slashes)
+   - set your API token
+     - for example: "apiKey": "your api token"
+   - disable or enable flood filter and set flood filter delay ("floodFilter": {) (values: 0.5 - 0.5sec and so on), for example:
+     - "enabled": true,
+     - "delay": 5
+   - set log read delay (values: 0.5 - 0.5sec and so on)
+     - for example: "readDelay": 2
+   - disable or enable sound notifications ("sound": {), for example:
+     - "enabled": true
+     - "pathToSoundFile": "D:\\\Test\\\notification.mp3" (two slashes)
+2. check or/and edit whisper filters in \config\config.json ("filters": {) (app filters log for messages that start with "filterFrom" value and contains "filterA" or "filterB" values). By deafult, in this repository config.json contains filters for EN language:
+   - "filterFrom": "@From",
+   - "filterA": "buy",
+   - "filterB": "wtb"
+4. save \config\config.json with UTF-8 encoding
+3.  python whisperNotify.py
 >or
-
-> create shortcut for whisperNotify.exe with options: -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: -d 0.5 - 0.5sec and so on) (optional) (if not specified - 2sec) -f <flood filter delay (notify not often than this value)(example: -f 10 - 10sec and so on) (optional) (if not specified - 5sec)>
-- you can always put cmd line for whisperNotify.py into .bat or .cmd file for quick use (end that file with "pause" to see any errors)
-- the smaller the log file, the faster the application, log filesize at start must be less than 50MB
+run whisperNotify.exe 
+4. the smaller the log file, the faster the application, log filesize at start must be less than 50MB
 
 
 POETradeWhisperNotifier application as a standalone package with .exe is available on the [releases page](https://github.com/Doberm4n/POETradeWhisperNotifier/releases/latest)
