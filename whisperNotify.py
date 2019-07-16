@@ -16,7 +16,7 @@ link = 'https://git.io/fjiyW'
 def pushNotify(pushbulletAPItoken, msg):
 	try:
 		pbInstance = pushbullet.Pushbullet(pushbulletAPItoken)
-		#pbInstance.push_note("New whisper: ", msg)
+		pbInstance.push_note("New whisper: ", msg)
 		printLine ("S","Ok")
 		printLine('C', "Waiting for delay...")
 	except pushbullet.errors.InvalidKeyError:
