@@ -32,10 +32,11 @@
    - disable or enable sound notifications ("sound": {), for example:
      - "enabled": true
      - "pathToSoundFile": "D:\\\Test\\\notification.mp3" (two slashes)
-2. check or/and edit whisper filters in \config\config.json ("filters": {) (app filters log for messages that start with "filterFrom" value and contains "filterA" or "filterB" values). If edited, filters.json must be saved with UTF-8 encoding to support different game languages. By deafult, in this repository filters.json contains filters for EN language:
+2. check or/and edit whisper filters in \config\config.json ("filters": {) (app filters log for messages that start with "filterFrom" value and contains "filterA" or "filterB" values). By deafult, in this repository config.json contains filters for EN language:
    - "filterFrom": "@From",
    - "filterA": "buy",
    - "filterB": "wtb"
+4. save \config\config.json with UTF-8 encoding
 3.  python whisperNotify.py
 >or
 run whisperNotify.exe 
