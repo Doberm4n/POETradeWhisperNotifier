@@ -48,7 +48,6 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 				currentPos = f.tell()
 				if monitorMessage:
 					print "\nWaiting for trade whisper...\n"
-					print 'in waiting floodTimer ' + str(floodTimer)
 					monitorMessage = False
 					i = 0
 					print 'Reading...' + str(i)+ ' (in progress...)\r',
@@ -69,7 +68,6 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 								startTime = time.time()
 								floodTimer = 0
 								isInitWhisper = False
-								print 'in send floodTimer ' + str(floodTimer)
 							elif not isFloodFilterDelay:
 								if notificationSound: playNotificationSound(notificationSound)
 								print("Sending notification...")
@@ -79,9 +77,8 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 								print "Waiting for delay..."
 							monitorMessage = True
 							i = 0
-				if not isInitWhisper: floodTimer = time.time() - startTime
-			print 'in sleep floodTimer ' + str(floodTimer)
 			time.sleep(delay)
+			if not isInitWhisper: floodTimer = time.time() - startTime
 	except Exception, e:
 		print "\nError: " + str(e)
 		exitApp()
