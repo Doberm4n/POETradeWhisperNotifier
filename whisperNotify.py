@@ -164,7 +164,7 @@ def printLine(style, line):
 	elif style == 'NW':
 		print (Fore.CYAN + Style.BRIGHT + line)
 	elif style == 'WW':
-		print (Fore.MAGENTA + Style.DIM + line)
+		print (Fore.WHITE + Back.MAGENTA + Style.DIM + line)
 	elif style == 'C':
 		print (Fore.WHITE + Style.DIM + line)
 	elif style == 'Y':

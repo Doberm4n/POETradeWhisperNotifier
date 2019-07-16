@@ -1,8 +1,0 @@
-{
-  "common": {},
-  "filters": {
-    "filterFrom": "@From",
-    "filterA": "buy",
-    "filterB": "wtb"
-  }
-}
