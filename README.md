@@ -20,18 +20,18 @@
 
 **Usage:** 
 1. before first run, open \config\config.json:
-  - set path to log file:
-    - for example: "logPath": "D:\\Test\\Client.txt"
-  - set your API token
-    - for example: "apiKey": "your api token"
-  - disable or enable flood filter and set flood filter delay ("floodFilter": {), for example:
-    - "enabled": true,
-    - "delay": 5
-  - set log read delay
-    - for example: "readDelay": 2
-  - disable or enable sound notifications ("sound": {), for example:
-    - "enabled": true
-    - "pathToSoundFile": "D:\\Test\notification.mp3"
+   - set path to log file:
+     - for example: "logPath": "D:\\\Test\\\Client.txt" (two slashes)
+   - set your API token
+     - for example: "apiKey": "your api token"
+   - disable or enable flood filter and set flood filter delay ("floodFilter": {), for example:
+     - "enabled": true,
+     - "delay": 5
+   - set log read delay
+     - for example: "readDelay": 2
+   - disable or enable sound notifications ("sound": {), for example:
+     - "enabled": true
+     - "pathToSoundFile": "D:\\\Test\\\notification.mp3" (two slashes)
 - check or/and edit whisper filters in \config\filters.json (app filters log for messages that start with "filterFrom" value and contains "filterA" or "filterB" values). If edited, filters.json must be saved with UTF-8 encoding to support different game languages. By deafult, in this repository filters.json contains filters for EN language
 - python whisperNotify.py -t <token> -p <path to log file> -s <path to sound file (.wav, .mp3) (optional)> -d <delay interval for reading log file (example: -d 0.5 - 0.5sec and so on) (optional) (if not specified - 2sec) -f <flood filter delay (notify not often than this value)(example: -f 10 - 10sec and so on) (optional) (if not specified - 5sec)> 
 >or
