@@ -1,0 +1,20 @@
+{
+  "settings": {
+    "logPath": "",
+    "readDelay": 2,
+    "apiKey": "",
+    "floodFilter": {
+      "enabled": true,
+      "delay": 5
+    },
+    "sound": {
+      "enabled": false,
+      "pathToSoundFile": ""
+    }
+  },
+  "filters": {
+    "filterFrom": "@From",
+    "filterA": "buy",
+    "filterB": "wtb"
+  }
+}
