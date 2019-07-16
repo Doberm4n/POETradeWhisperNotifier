@@ -14,6 +14,7 @@ release/
 *.txt
 *.wav
 *.mp3
+test*
 !version.txt
 !build_exe.cmd
 /test
