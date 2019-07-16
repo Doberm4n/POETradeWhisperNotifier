@@ -10,7 +10,7 @@ from playsound import playsound
 from colorama import init
 from colorama import Fore, Back, Style
 
-version = '0.9.5'
+version = '0.9.50'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
@@ -86,10 +86,13 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 
 def main(argv):
 	init()
-	printLine ('A' ,'\n TradeWhisperNotifier for PoE ')
-	printLine ('A' ,' version: ' + str(version) + '               ')
-	printLine ('A' ,' (' + link + ')       ')
-	printLine ('W' ,' (To exit press CTRL+C)       ')
+	printLine('A' ,'\n                              ')
+	printLine('A' ,' TradeWhisperNotifier for PoE ')
+	printLine('A' ,' version: ' + str(version) + '              ')
+	printLine('A' ,' (' + link + ')       ')
+	printLine('A' ,'                              ')
+	printLine('W' ,' (To exit press CTRL+C)       ')
+
 	delay = None
 	pushbulletAPItoken = None
 	logPath = None
