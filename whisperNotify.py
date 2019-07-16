@@ -48,7 +48,7 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 				newLine = unicode(f.readline().strip(), "utf-8")
 				currentPos = f.tell()
 				if monitorMessage:
-					printLine('W', "\nWaiting for trade whisper...\n")
+					printLine('WW', "\nWaiting for trade whisper...\n")
 					monitorMessage = False
 					i = 0
 					print 'Reading...' + str(i)+ ' (in progress...)\r',
@@ -163,6 +163,8 @@ def printLine(style, line):
 		print (Fore.GREEN + Style.BRIGHT + line)
 	elif style == 'NW':
 		print (Fore.CYAN + Style.BRIGHT + line)
+	elif style == 'WW':
+		print (Fore.MAGENTA + Style.DIM + line)
 	elif style == 'C':
 		print (Fore.WHITE + Style.DIM + line)
 	elif style == 'Y':
