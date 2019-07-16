@@ -154,7 +154,6 @@ def playNotificationSound(path):
 def printLine(style, line):
 	if style == 'A':
 		print (Fore.WHITE + Back.GREEN + Style.BRIGHT + line)
-		print Style.RESET_ALL + '\r',
 	if style == 'W':
 		print (Fore.WHITE + Style.BRIGHT + line)
 	elif style == 'S':
@@ -170,7 +169,7 @@ def printLine(style, line):
 	print Style.RESET_ALL + '\r',
  
 def exitApp():
-	raw_input("\nPress enter to exit")
+	raw_input("\nPress [ENTER] to exit")
 	sys.exit(2)
 
 if __name__ == "__main__":
@@ -178,5 +177,5 @@ if __name__ == "__main__":
 		main(sys.argv[1:])
 	except KeyboardInterrupt:
 		print '\n\nExit... (Keyboard Interrupt)'
-		raw_input("\nPress enter to exit")
+		raw_input("\nPress [ENTER] to exit")
 		sys.exit(2)
