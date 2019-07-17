@@ -10,13 +10,13 @@ from playsound import playsound
 from colorama import init
 from colorama import Fore, Back, Style
 
-version = '0.9.50'
+version = '0.9.51'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
 	try:
 		pbInstance = pushbullet.Pushbullet(pushbulletAPItoken)
-		#pbInstance.push_note("New whisper: ", msg)
+		pbInstance.push_note("New whisper: ", msg)
 		printLine ("S","Ok")
 		printLine('C', "Waiting for delay...")
 	except pushbullet.errors.InvalidKeyError:
@@ -54,14 +54,12 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 					printLine('WW', "\nWaiting for trade whisper...\n")
 					monitorMessage = False
 					i = 0
-					#print ' Reading...' + str(i)+ ' (in progress...)\r',
 					printLine('P', '  Reading...' + str(i)+ ' new lines (in progress...)\r')
 				if checkedPos < currentPos:
 					checkedLine = newLine.strip()
 					checkedPos = f.tell()
 					if checkedLine:
 						i += 1
-						#print ' Reading...' + str(i)+ ' (in progress...)\r',
 						printLine('P', '  Reading...' + str(i)+ ' new lines (in progress...)\r')
 						if (filterFrom in checkedLine and (filterA in checkedLine or filterB in checkedLine)):
 							lineToSend = '@' + checkedLine.split(' @', 1)[-1]
