@@ -44,6 +44,7 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 			isInitWhisper = True
 			curProgressIndicator = 0
 			indicatorsList = ['|', '/', '-', '\\', '|', '/', '-', '\\']
+			indicatorsList2 = [chr(94), ' ']
 		while True:
 			with open(logPath,'r') as f:
 				f.seek(checkedPos)
@@ -54,14 +55,14 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 					monitorMessage = False
 					i = 0
 					#print ' Reading...' + str(i)+ ' (in progress...)\r',
-					printLine('P', '  Reading...' + str(i)+ ' (in progress...)\r')
+					printLine('P', '  Reading...' + str(i)+ ' new lines (in progress...)\r')
 				if checkedPos < currentPos:
 					checkedLine = newLine.strip()
 					checkedPos = f.tell()
 					if checkedLine:
 						i += 1
 						#print ' Reading...' + str(i)+ ' (in progress...)\r',
-						printLine('P', '  Reading...' + str(i)+ ' (in progress...)\r')
+						printLine('P', '  Reading...' + str(i)+ ' new lines (in progress...)\r')
 						if (filterFrom in checkedLine and (filterA in checkedLine or filterB in checkedLine)):
 							lineToSend = '@' + checkedLine.split(' @', 1)[-1]
 							printLine('C', '\n\n' + datetime.now().strftime('[%Y-%m-%d %H:%M:%S]'))
