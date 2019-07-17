@@ -16,7 +16,7 @@ link = 'https://git.io/fjiyW'
 def pushNotify(pushbulletAPItoken, msg):
 	try:
 		pbInstance = pushbullet.Pushbullet(pushbulletAPItoken)
-		pbInstance.push_note("New whisper: ", msg)
+		#pbInstance.push_note("New whisper: ", msg)
 		printLine ("S","Ok")
 		printLine('C', "Waiting for delay...")
 	except pushbullet.errors.InvalidKeyError:
@@ -42,6 +42,8 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 			startTime = time.time()
 			floodTimer = floodFilterDelay
 			isInitWhisper = True
+			curProgressIndicator = 0
+			indicatorsList = ['|', '/', '-', '\\', '|', '/', '-', '\\']
 		while True:
 			with open(logPath,'r') as f:
 				f.seek(checkedPos)
@@ -51,13 +53,15 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 					printLine('WW', "\nWaiting for trade whisper...\n")
 					monitorMessage = False
 					i = 0
-					print 'Reading...' + str(i)+ ' (in progress...)\r',
+					#print ' Reading...' + str(i)+ ' (in progress...)\r',
+					printLine('P', '  Reading...' + str(i)+ ' (in progress...)\r')
 				if checkedPos < currentPos:
 					checkedLine = newLine.strip()
 					checkedPos = f.tell()
 					if checkedLine:
 						i += 1
-						print 'Reading...' + str(i)+ ' (in progress...)\r',
+						#print ' Reading...' + str(i)+ ' (in progress...)\r',
+						printLine('P', '  Reading...' + str(i)+ ' (in progress...)\r')
 						if (filterFrom in checkedLine and (filterA in checkedLine or filterB in checkedLine)):
 							lineToSend = '@' + checkedLine.split(' @', 1)[-1]
 							printLine('C', '\n\n' + datetime.now().strftime('[%Y-%m-%d %H:%M:%S]'))
@@ -78,8 +82,12 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 								printLine('C', "Waiting for delay...")
 							monitorMessage = True
 							i = 0
+				if not monitorMessage: print indicatorsList[curProgressIndicator] + '\r',
+				curProgressIndicator += 1
+				if curProgressIndicator > 7: curProgressIndicator = 0
 			time.sleep(delay)
 			if not isInitWhisper: floodTimer = time.time() - startTime
+			
 	except Exception, e:
 		printLine('E', "\nError: " + str(e))
 		exitApp()
@@ -161,6 +169,8 @@ def printLine(style, line):
 		print (Fore.WHITE + Style.BRIGHT + line)
 	elif style == 'S':
 		print (Fore.GREEN + Style.BRIGHT + line)
+	elif style == 'P':
+		print (Fore.WHITE + Style.DIM + line),
 	elif style == 'NW':
 		print (Fore.CYAN + Style.BRIGHT + line)
 	elif style == 'WW':
