@@ -10,7 +10,7 @@ from playsound import playsound
 from colorama import init
 from colorama import Fore, Back, Style
 
-version = '0.9.51'
+version = '0.9.52'
 link = 'https://git.io/fjiyW'
 
 def pushNotify(pushbulletAPItoken, msg):
@@ -48,7 +48,7 @@ def MonitorLogs(logPath, pushbulletAPItoken, filterFrom, filterA, filterB, delay
 		while True:
 			with open(logPath,'r') as f:
 				f.seek(checkedPos)
-				newLine = unicode(f.readline().strip(), "utf-8")
+				newLine = unicode(f.readline().strip(), "utf-8").encode("utf-8")
 				currentPos = f.tell()
 				if monitorMessage:
 					printLine('WW', "\nWaiting for trade whisper...\n")
